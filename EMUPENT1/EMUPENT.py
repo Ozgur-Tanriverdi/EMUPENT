@@ -2,9 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 from tkinter import filedialog
-import PIL
 from PIL import Image, ImageTk
-import msvcrt
+import os
 
 #Tabs
 class Tabs:
@@ -113,15 +112,15 @@ window.title("EmuPent")
 window.configure(bg="white")
 window.resizable(width=False, height=False) 
 #Photo
-foto = Photo(window, 1000, 1000, "white", 0.30, 0.19, r"C:/Program Files (x86)/Emupent/mcu.jpg", 900, 700, 0, 0)
-foto1 = Photo(window, 40, 40, "white", 0.05, 0.399, r"C:/Program Files (x86)/Emupent/open.jpg", 900, 700, 0, 0)
-foto2 = Photo(window, 40, 40, "white", 0.05, 0.45, r"C:/Program Files (x86)/Emupent/yeni.jpg", 900, 700, 0, 0)
-foto3 = Photo(window, 40, 40, "white", 0.05, 0.503, r"C:/Program Files (x86)/Emupent/last.jpg", 900, 700, 0, 0)
-foto4 = Photo(window, 40, 40, "white", 0.05, 0.555, r"C:/Program Files (x86)/Emupent/ex.jpg", 900, 700, 0, 0)
-foto5 = Photo(window, 65, 65, "white", 0.909, 0.342, r"C:/Program Files (x86)/Emupent/flow.jpg", 900, 700, 0, 0)
-foto6 = Photo(window, 65, 65, "white", 0.904, 0.395, r"C:/Program Files (x86)/Emupent/docu.jpg", 900, 700, 0, 0)
-foto7 = Photo(window, 65, 65, "white", 0.904, 0.437, r"C:/Program Files (x86)/Emupent/mc.jpg", 900, 700, 0, 0)
-foto8 = Photo(window, 65, 65, "white", 0.912, 0.503, r"C:/Program Files (x86)/Emupent/about.jpg", 900, 700, 0, 0)
+foto = Photo(window, 1000, 1000, "white", 0.30, 0.19, r"mcu.jpg", 900, 700, 0, 0)
+foto1 = Photo(window, 40, 40, "white", 0.05, 0.399, r"open.jpg", 900, 700, 0, 0)
+foto2 = Photo(window, 40, 40, "white", 0.05, 0.45, r"yeni.jpg", 900, 700, 0, 0)
+foto3 = Photo(window, 40, 40, "white", 0.05, 0.503, r"last.jpg", 900, 700, 0, 0)
+foto4 = Photo(window, 40, 40, "white", 0.05, 0.555, r"ex.jpg", 900, 700, 0, 0)
+foto5 = Photo(window, 65, 65, "white", 0.909, 0.342, r"flow.jpg", 900, 700, 0, 0)
+foto6 = Photo(window, 65, 65, "white", 0.904, 0.395, r"docu.jpg", 900, 700, 0, 0)
+foto7 = Photo(window, 65, 65, "white", 0.904, 0.437, r"mc.jpg", 900, 700, 0, 0)
+foto8 = Photo(window, 65, 65, "white", 0.912, 0.503, r"about.jpg", 900, 700, 0, 0)
 #foto1 ve foto8 arasındaki tüm resimler pngegg.com
 but1 = Button(window, "New File", "white", "black", "white", "blue", 1, 21, "Courier 13", 0.09, 0.398) 
 but2 = Button(window,"Open File","white","black","white","blue",1,21,"Courier 13",0.09, 0.450)
@@ -201,14 +200,17 @@ class RegisterOperations:
                     cls.deneme = 'buyuk'
                     loop.EQ(cls.deneme)
                     loop.GEL(cls.deneme)
+                    loop.LEG(cls.deneme)
                 elif value1 < cls.value2:
                     cls.deneme = 'kucuk'
                     loop.EQ(cls.deneme)
                     loop.GEL(cls.deneme)
+                    loop.LEG(cls.deneme)
                 elif value1 == cls.value2:
                     cls.deneme = 'esit'
                     loop.EQ(cls.deneme)
                     loop.GEL(cls.deneme)
+                    loop.LEG(cls.deneme)
                 return cls.deneme
 
             
@@ -639,9 +641,10 @@ def easyforregistersavingIndex(registernameInd,EX,X,line_upper, register_degerle
         print(f"Error: {e}")
         print("No valid number value entered or invalid format t")
         
-def easyforregistersavingEX(registernameEX, EX, X, H, L, line_upper, register_degerleri, pointer): 
+def easyforregistersavingEX(registernameEX, EX, X, H, L, line_upper, register_degerleri, pointer,stringofregister): 
     try:  
-        stringofregister = line_upper.split(registernameEX)[1].strip()  # get the EX    
+        if stringofregister == "":
+            stringofregister = line_upper.split(registernameEX)[1].strip()  # get the EX  
         if stringofregister == "[ESI]":    
             deger = int(pointer["[ESI]"],16)
         elif stringofregister == "[EDI]":
@@ -655,7 +658,7 @@ def easyforregistersavingEX(registernameEX, EX, X, H, L, line_upper, register_de
         elif stringofregister.endswith("B"):
             deger = int(stringofregister[:-1], 2)
         else:
-            deger = int(stringofregister)  # get the EX         
+            deger = int(stringofregister)  # get the EX     
         b = '{:08x}'.format(deger)
         register_degerleri[EX] = b
         register_degerleri[X] = b[4:]
@@ -773,7 +776,7 @@ class string:
     kara=""
     x = 0
     result = ""
-
+    length = 0
     
     
     @classmethod
@@ -791,6 +794,7 @@ class string:
                 print("Syntax of string is wrong")
         elif process == 'propertiesofstring':           
             cls.string = line_upper.split()[0]
+         
             a = line_upper.index("DB") + 3  
             b = line.find(",",a)
             cls.numberofindex = line[a:b].strip()
@@ -823,7 +827,8 @@ class string:
             elif line_upper.endswith("'$'"):
                 cls.dollar = line[c+2].strip()
                 cls.memory_val3 = memory.saving_memory('DB3', texteditor, cls.data, cls.y)    #DB3 for prop of string
-                
+            return cls.string   
+        
         elif process == 'EDX':
             offset = "OFFSET"
             index = line_upper.find(offset)
@@ -854,6 +859,7 @@ class string:
             
         elif process == 'scanf':
             a=input()
+            cls.length = len(a)
             kara=a
             cls.y.append(a)
             if values_of_registers['ESI'] == None:
@@ -867,7 +873,14 @@ class string:
        
             pointer["[ESI]"] = cls.x
             return q
-            
+        
+        elif process == 'length':            
+          
+            str_length= str(cls.length)
+            easyforregistersavingEX("MOV EAX,", "EAX", "AX", "AH", "AL", line_upper, values_of_registers, pointer,str_length)
+        elif process == 'length2':   
+            str_length= str(cls.length)
+            easyforregistersavingEX("MOV EBX,", "EBX", "BX", "BH", "BL", line_upper, values_of_registers, pointer,str_length)    
 
 class MetinSinifi():
     def __init__(self, metin, bas):
@@ -916,10 +929,11 @@ class memory:
 class loop:
     dt=""
     et=""
+    ft=""
     
     
     @classmethod
-    def op_loop(cls, process, index_i, line, line_upper, text_editor, window2, start_index, x):
+    def op_loop(cls, process, index_i, line, line_upper, text_editor, window2, start_index,x):
         lines = text_editor.get("1.0", "end").split('\n')
         index_i = lines.index(line) + 1
         
@@ -932,9 +946,44 @@ class loop:
                 offset = "JL" 
                 index = line_upper.find(offset)
                 return for_loops.forloops(index, offset, line_upper, lines)
+        
+        if process == 'C1' and  loop.ft == "G"  :
+                offset = "JG"
+                index = line_upper.find(offset)
+                return for_loops.forloops(index, offset, line_upper, lines)  
+    
+        if process == 'C4' and loop.ft == "LE":
+                offset = "JLE" 
+                index = line_upper.find(offset)
+                return for_loops.forloops(index, offset, line_upper, lines)
+
+        if process == 'C9' and  loop.dt == "GE"  :
+                offset = "JNL"
+                index = line_upper.find(offset)
+                return for_loops.forloops(index, offset, line_upper, lines)  
+    
+        if process == 'C8' and loop.dt == "L":
+                offset = "JNGE" 
+                index = line_upper.find(offset)
+                return for_loops.forloops(index, offset, line_upper, lines)
+        
+        if process == 'C10' and  loop.ft == "G"  :
+                offset = "JNLE"
+                index = line_upper.find(offset)
+                return for_loops.forloops(index, offset, line_upper, lines)  
+    
+        if process == 'C7' and loop.ft == "LE":
+                offset = "JNG" 
+                index = line_upper.find(offset)
+                return for_loops.forloops(index, offset, line_upper, lines)
             
         if process == 'C6' and loop.et == "NE":
             offset = "JNE" 
+            index = line_upper.find(offset)
+            return for_loops.forloops(index, offset, line_upper, lines)
+        
+        if process == 'C11' and loop.et == "E":
+            offset = "JE" 
             index = line_upper.find(offset)
             return for_loops.forloops(index, offset, line_upper, lines)
         
@@ -951,6 +1000,15 @@ class loop:
         else:
             cls.dt = "GE"
         return cls.dt
+    
+    @classmethod
+    def LEG(cls,wht):
+        if wht == 'buyuk':  # wht değeri "buyuk" veya "esit" değilse
+            cls.ft = "G"
+        else:
+            cls.ft = "LE"
+        return cls.ft
+    
     @classmethod    
     def EQ(cls,wht):
         if wht == 'esit':
@@ -1004,7 +1062,7 @@ class registersaving:
         flags = {"CF" : 0, "PF": 0, "AF": 0, "ZF": 0, "SF": 0, "OF": 0, "TF": 0, "IF": 0}  #EKLENECEKLER VAR
         i = 0
         variable =0 
-        
+        strng = ""
         while i < len(lines):
          
             line = lines[i]
@@ -1018,7 +1076,7 @@ class registersaving:
                 for linex in lines:
                     line_upperx = linex.upper()
                     if "DB" in line_upperx and line_upperx.count("'") == 2 and line_upperx.count(",") == 2  :                                                                
-                            string.op_string('propertiesofstring', entry_list, i, register_degerleri, linex, line_upperx, text_editor, custom_console, window2, pointers,variable)
+                            strng = string.op_string('propertiesofstring', entry_list, i, register_degerleri, linex, line_upperx, text_editor, custom_console, window2, pointers,variable)
                     elif "DB" in line_upperx and line_upperx.count("'") == 2:                             
                             string.op_string('set_string', entry_list, i, register_degerleri, linex, line_upperx, text_editor, custom_console, window2, pointers,variable)
                     if ".CODE" in line_upperx:
@@ -1032,17 +1090,20 @@ class registersaving:
                     
             elif "MOV EDX,OFFSET" in line_upper:           
                 string.op_string('EDX', entry_list, i, register_degerleri,line, line_upper, text_editor, custom_console, window2, pointers,variable)
-        
+            elif f"MOV EAX,[{strng}]" in line_upper:
+                string.op_string('length', entry_list, i, register_degerleri, line, line_upper, text_editor, custom_console, window2, pointers,variable)
             elif "MOV EAX," in line_upper:
-                easyforregistersavingEX("MOV EAX,", "EAX", "AX", "AH", "AL", line_upper, register_degerleri, pointers)
+                easyforregistersavingEX("MOV EAX,", "EAX", "AX", "AH", "AL", line_upper, register_degerleri, pointers,"")
             elif "MOV AX," in line_upper:
                 easyforregistersavingX("MOV AX,", "EAX", "AX", "AH", "AL", line_upper, register_degerleri, pointers)
             elif "MOV AH," in line_upper:
                 easyforregistersavingH("MOV AH,", "EAX", "AX", "AH", "AL", line_upper, register_degerleri, pointers) 
             elif "MOV AL," in line_upper:
                 easyforregistersavingL("MOV AL,", "EAX", "AX", "AH", "AL", line_upper, register_degerleri, pointers)     
+            elif f"MOV EBX,[{strng}]" in line_upper:
+                string.op_string('length2', entry_list, i, register_degerleri, line, line_upper, text_editor, custom_console, window2, pointers,variable)
             elif "MOV EBX," in line_upper:
-                easyforregistersavingEX("MOV EBX,", "EBX", "BX", "BH", "BL", line_upper, register_degerleri, pointers)
+                easyforregistersavingEX("MOV EBX,", "EBX", "BX", "BH", "BL", line_upper, register_degerleri, pointers,"")
             elif "MOV BX," in line_upper:
                 easyforregistersavingX("MOV BX,","EBX", "BX", "BH", "BL", line_upper, register_degerleri, pointers)
             elif "MOV BH," in line_upper:
@@ -1050,7 +1111,7 @@ class registersaving:
             elif "MOV BL," in line_upper:
                 easyforregistersavingL("MOV BL,","EBX", "BX", "BH", "BL", line_upper, register_degerleri, pointers) 
             elif "MOV ECX," in line_upper:
-                easyforregistersavingEX("MOV ECX,", "ECX", "CX", "CH", "CL", line_upper, register_degerleri, pointers)
+                easyforregistersavingEX("MOV ECX,", "ECX", "CX", "CH", "CL", line_upper, register_degerleri, pointers,"")
             elif "MOV CX," in line_upper:
                 easyforregistersavingX("MOV CX,", "ECX", "CX", "CH", "CL", line_upper, register_degerleri, pointers)
             elif "MOV CH," in line_upper:
@@ -1058,7 +1119,7 @@ class registersaving:
             elif "MOV CL," in line_upper:
                 easyforregistersavingL("MOV CL,", "ECX", "CX", "CH", "CL", line_upper, register_degerleri, pointers) 
             elif "MOV EDX," in line_upper:
-                easyforregistersavingEX("MOV EDX,", "EDX", "DX", "DH", "DL", line_upper, register_degerleri, pointers)
+                easyforregistersavingEX("MOV EDX,", "EDX", "DX", "DH", "DL", line_upper, register_degerleri, pointers,"")
             elif "MOV DX," in line_upper:
                 easyforregistersavingX("MOV DX,", "EDX", "DX", "DH", "DL", line_upper, register_degerleri, pointers)
             elif "MOV DH," in line_upper:
@@ -1068,14 +1129,7 @@ class registersaving:
             elif "MOV ESI," in line_upper:
                 cagir=int(easyforregistersavingIndex("MOV ESI,", "ESI", "SI",line_upper, register_degerleri, pointers),16)
                 string.x = cagir
-          
-            
-            
-
-                
-             
-
-                
+                                              
             elif "MOV EDI," in line_upper:
                     cagir1=int(easyforregistersavingIndex("MOV EDI,", "EDI", "DI",line_upper, register_degerleri, pointers),16)
                     string.x = cagir1
@@ -1083,15 +1137,7 @@ class registersaving:
                     bagir1=easyforregistersavingAdress("MOV [EDI],", "[EDI]", "[DI]",line_upper, register_degerleri)
                     MetinSinifi(bagir1,cagir1)
 
-        
-
-
-                
-            
-     
-
-
-
+                                       
             elif "CMP" in line_upper:
                 x = register_operations.operation_command('CMP', line_upper, register_degerleri,flags, 'two_operand',pointers, a)
             
@@ -1099,21 +1145,23 @@ class registersaving:
             elif "JGE" in line_upper:
                 i = loop.op_loop('C2',i, line, line_upper, text_editor, window2, start_index,x) 
             elif "JG" in line_upper:
-                i = loop.op_loop('C1',i, line, line_upper, text_editor, window2, start_index, x)
-            elif "JL" in line_upper:
-                i = loop.op_loop('C3',i, line, line_upper, text_editor, window2, start_index, x)
+                i = loop.op_loop('C1',i, line, line_upper, text_editor, window2, start_index,x)
             elif "JLE" in line_upper:
-                i = loop.op_loop('C4',i, line, line_upper, text_editor, window2, start_index, x) 
-            elif "JNG" in line_upper:
-                i = loop.op_loop('C4',i, line, line_upper, text_editor, window2, start_index, x) 
-            elif "JNGE" in line_upper:
+                i = loop.op_loop('C4',i, line, line_upper, text_editor, window2, start_index, x)
+            elif "JL" in line_upper:
                 i = loop.op_loop('C3',i, line, line_upper, text_editor, window2, start_index, x) 
-            elif "JNL" in line_upper:
-                i = loop.op_loop('C2',i, line, line_upper, text_editor, window2, start_index, x) 
+            elif "JNGE" in line_upper:
+                i = loop.op_loop('C8',i, line, line_upper, text_editor, window2, start_index, x) 
+            elif "JNG" in line_upper:
+                i = loop.op_loop('C7',i, line, line_upper, text_editor, window2, start_index, x) 
             elif "JNLE" in line_upper:
-                i = loop.op_loop('C1',i, line, line_upper, text_editor, window2, start_index, x)
+                 i = loop.op_loop('C10',i, line, line_upper, text_editor, window2, start_index, x)
+            elif "JNL" in line_upper:
+                i = loop.op_loop('C9',i, line, line_upper, text_editor, window2, start_index, x) 
             elif "JNE" in line_upper:
                 i = loop.op_loop('C6',i, line, line_upper, text_editor, window2, start_index, x) 
+            elif "JE" in line_upper:
+                i = loop.op_loop('C11',i, line, line_upper, text_editor, window2, start_index, x) 
             elif "JO" in line_upper:
                 i = loop.op_loop("O",i, line, line_upper, text_editor, window2, start_index, x) 
             elif "JNO" in line_upper:
@@ -1169,6 +1217,7 @@ class registersaving:
             elif 'INT 21H' in line_upper and (register_degerleri["AH"]) == '09':                
                 string.op_string('print', entry_list, i, register_degerleri, line, line_upper, text_editor, custom_console, window2, pointers,variable)
                 variable += 1
+                os.system('cmd')
             elif 'INT 21H' in line_upper and (register_degerleri["AH"]) == '0a':                                
                 a = string.op_string('scanf', entry_list, i, register_degerleri, line, line_upper, text_editor, custom_console, window2, pointers,variable)
                 variable += 1
@@ -1404,10 +1453,10 @@ def Anapencere(icerik=None):
     code_runner = CodeRunner(oopEntryList, textEditor, console_text, window2)
                              
 
-    image1 = Image.open(r"C:/Program Files (x86)/Emupent/yeni.jpg")  
+    image1 = Image.open(r"yeni.jpg")  
     photo1 = ImageTk.PhotoImage(image1)
 
-    image2 = Image.open(r"C:/Program Files (x86)/Emupent/mcu.jpg")
+    image2 = Image.open(r"mcu.jpg")
     photo2 = ImageTk.PhotoImage(image2)
     
     button31 = tk.Button(upper_frame, text="RUN", compound=tk.TOP, image=photo1, command=code_runner.run_code, width=50, height=50)
