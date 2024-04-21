@@ -28,7 +28,7 @@ mov edi,esi
 mov eax,[buffer]
 dec eax
 add edi,eax
-mov ebx,20
+mov ebx,30
 cmp ebx,eax
 jl print_msg3
 check_palindrome:
