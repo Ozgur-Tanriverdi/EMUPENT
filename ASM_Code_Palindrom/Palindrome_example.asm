@@ -15,6 +15,7 @@ mov edx,offset msg5
 mov ah,09h
 int 21h
 
+ank:
 mov edx,offset msg
 mov ah,09h
 int 21h
@@ -56,7 +57,7 @@ print_msg3:
 mov edx,offset msg3
 mov ah,09h
 int 21h
-ank:
+jmp ank
 
 
 
