@@ -45,13 +45,13 @@ print_message:         ;Print msg1 which is 'It is a Palindrome'
 mov edx,offset msg1    
 mov ah,09h
 int 21h
-jmp ank
+jmp ank                ;Jump to ank
 
 print_message2:        ;Print msg2 which is 'It is not a Palindrome'
 mov edx,offset msg2
 mov ah,09h
 int 21h
-jmp ank
+jmp ank                ;Jump to ank
 
 print_msg3:            ;Print msg3 which is 'Length is too long'
 mov edx,offset msg3
