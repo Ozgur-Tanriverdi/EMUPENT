@@ -13,7 +13,7 @@ int 21h                ;Call interrupt to print the message
 
 mov edx,offset msg5    ;Load the address of the explanation message for palindrome check into edx
 mov ah,09h             ;Set AH to 09h (invoke string printing service)
-int 21h		       ;Call interrupt to print the message
+int 21h		           ;Call interrupt to print the message
 
 ank:
 mov edx,offset msg     ;Load the address of the message prompting for user input into edx
