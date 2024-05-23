@@ -57,5 +57,6 @@ print_msg3:            ;Print msg3 which is 'Length is too long'
 mov edx,offset msg3
 mov ah,09h
 int 21h
-jmp ank                ;Jump to ank
+jmp exit                ;Jump to ank
 
+exit:
