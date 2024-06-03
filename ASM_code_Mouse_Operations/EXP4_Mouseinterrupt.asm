@@ -27,7 +27,7 @@ check_middle: ; Compare for middle button
 mov edx,offset MSG3
 mov ah, 09h
 int 21h
-jmp end
+jmp end       ; End program
 
 go_right:     ; Display right button message
 mov edx,offset MSG2
